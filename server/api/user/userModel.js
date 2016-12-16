@@ -6,7 +6,13 @@ var UserSchema = new Schema({
     type: String,
     unique: true,
     required: true
-  }
+	}
+
+  address: {
+   	type: String,
+   	unique: false,	//people may share the same address
+   	required: true
+   	}
 });
 
 module.exports = mongoose.model('user', UserSchema);
