@@ -7,6 +7,12 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 // connect to mongoDB database 
 mongoose.connect(config.db.url);
+
+function errorHandler(err, req, res, next) {
+res.status(500);
+res.render('error', {error: err});
+}
+
 //Set - up global middleware
  app.use(morgan('dev'));
  app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +26,7 @@ mongoose.connect(config.db.url);
 // So  move the routes-related code 
 //into  api module .
 app.use('/api/', api);
-
+app.use(errorHandler);
 // API endpoints such as below has been moved to user Router within api module
 //app.get('/user', function(req, res) {
    // res.send([{username:'wine1'}, {username:'wine2'}]);
