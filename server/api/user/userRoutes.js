@@ -1,5 +1,5 @@
 var router = require('express').Router();
-
+var user = require('./userModel.js');
 // setup boilerplate route jsut to satisfy a request
 // for building
 
@@ -8,13 +8,18 @@ var router = require('express').Router();
 //Then use route() to remove redundant code.
 router.route('/')
   .get(function(req, res){    
-    console.log('Hey from user!!');
-    res.send({ok: true});
-  })
+    user.find(function (err, users) {
+ 		if (err) return console.error(err);
+   		res.send(users);
+  });
+})
   .post(function(req, res){
-  if(!req.body.username) next();
-  console.log("good");
+  if(!req.body.username || !req.body.address) next();
+  var newuser = new user(req.body);
+  newuser.save(function (err, user) {
+  	if(err) next(err);
+  	});
   res.send();  
   });
-
 module.exports = router;
+
