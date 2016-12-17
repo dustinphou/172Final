@@ -11,13 +11,10 @@ router.route('/')
   });
 })
   .post(function(req, res){
-  if(!req.body) next();
+  if(!req.body.title) next();
   var newpost = new post(req.body);
-    post.author = user.find({username: req.body.username}, function(user){
-  	return user._id;
-  })
   newpost.save(function (err, user) {
-  	if(err) next(err);
+  	if(err) next();
   	});
   res.send();  
   });

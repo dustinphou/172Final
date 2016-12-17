@@ -9,17 +9,38 @@ var user = require('./userModel.js');
 router.route('/')
   .get(function(req, res){    
     user.find(function (err, users) {
- 		if (err) return console.error(err);
+ 		if (err) next();
    		res.send(users);
   });
 })
-  .post(function(req, res){
+  .post(function(req, res, next){
   if(!req.body.username || !req.body.address) next();
   var newuser = new user(req.body);
   newuser.save(function (err, user) {
-  	if(err) next(err);
+  	if(err) 
+      {
+        console.log("??????????????"); 
+        return next(err);
+      }
   	});
   res.send();  
   });
+
+// router.route('/:user_id')
+// 	.get(function(req, res){    
+//     user.find({_id: req._id}, function (err, user) {
+//  		if (err) return console.error(err);
+//    		res.send(user);
+//   });
+// })
+//   .post(function(req, res){
+//   if(!req.body.username || !req.body.address) next();
+//   var newuser = new user(req.body);
+//   newuser.save(function (err, user) {
+//   	if(err) next(err);
+//   	});
+//   res.send();  
+//   });
+
 module.exports = router;
 
